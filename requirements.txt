@@ -1,0 +1,10 @@
+fastparquet
+Jupyter
+
+matplotlib
+numpy
+pre-commit
+scikit-learn
+torch
+torchvision
+tqdm
