@@ -152,6 +152,7 @@ def run_train(
         loader=get_eval_dataloader(
             parquet_file=STREAK_DATA_TRAINING_SHORT,
         ),
+        print_report=False,
     )
     logger.info(
         f"Accuracy on short streaks (training): {hist.streak_accuracy_train_short:.4f}"
@@ -162,6 +163,7 @@ def run_train(
         loader=get_eval_dataloader(
             parquet_file=STREAK_DATA_TRAINING_LONG,
         ),
+        print_report=False,
     )
     logger.info(
         f"Accuracy on long streaks (training): {hist.streak_accuracy_train_long:.4f}"
@@ -172,6 +174,7 @@ def run_train(
         loader=get_eval_dataloader(
             parquet_file=STREAK_DATA_EVALUATION_SHORT,
         ),
+        print_report=False,
     )
     logger.info(
         f"Accuracy on short streaks (evaluation): {hist.streak_accuracy_eval_short:.4f}"
@@ -182,6 +185,7 @@ def run_train(
         loader=get_eval_dataloader(
             parquet_file=STREAK_DATA_EVALUATION_LONG,
         ),
+        print_report=False,
     )
     logger.info(
         f"Accuracy on long streaks (evaluation): {hist.streak_accuracy_eval_long:.4f}"

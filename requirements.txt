@@ -1,9 +1,9 @@
 fastparquet
 Jupyter
-
 matplotlib
 numpy
 pre-commit
+pytorch-tcn
 scikit-learn
 torch
 torchvision
