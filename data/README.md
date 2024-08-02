@@ -8,19 +8,20 @@ to use are included below.
 
 ## contents
 
-- `create.ipynb` - Notebook containing the code used to create the datasets from the raw data.
-- `raw_csv/*` - Contains csv files of the main data used (courtest of [Kaggle](https://www.kaggle.com/datasets/wyattowalsh/basketball/data)).
+- `create.ipynb` - Notebook containing the code used to create the final datasets from the raw data.
 - `parquet/*` - Contains `.parquet` files of dataframes with the testing / training / evaluation datasets.
   - `complete_df.parquet` - All available game data.
-  - `training_df.parquet` - Training dataset (games before the 2022 All-star break).
   - `evaluation_df_all.parquet` - Evaluation dataset (games after the 2022 All-star break).
-  - `evaluation_df_half_21_22.parquet` - The 2021-22 season games from the evaluation data.
   - `evaluation_df_full_22_23.parquet` - The 2022-23 season games from the evaluation data.
-  - `final_week_df.parquet` - Last week of data from the 2022-23 season, as small sample/example data.
-  - `training_streaks_short_df.parquet` - Dataset of streak-breaks of length 3-4, from training data.
-  - `training_streaks_long_df.parquet` - Dataset of streak-breaks of length 5+, from training data.
-  - `evaluation_streaks_short_df.parquet` - Dataset of streak-breaks of length 3-4, from evaluation data.
+  - `evaluation_df_half_21_22.parquet` - The 2021-22 season games from the evaluation data.
   - `evaluation_streaks_long_df.parquet` - Dataset of streak-breaks of length 5+, from evaluation data.
+  - `evaluation_streaks_short_df.parquet` - Dataset of streak-breaks of length 3-4, from evaluation data.
+  - `final_week_df.parquet` - Last week of data from the 2022-23 season, as small sample/example data.
+  - `training_df.parquet` - Training dataset (games before the 2022 All-star break).
+  - `training_streaks_long_df.parquet` - Dataset of streak-breaks of length 5+, from training data.
+  - `training_streaks_short_df.parquet` - Dataset of streak-breaks of length 3-4, from training data.
+- `predict_csv/*` - Contains csv files of example game data for using the prediction notebook.
+- `raw_csv/*` - Contains csv files of the main data used (courtest of [Kaggle](https://www.kaggle.com/datasets/wyattowalsh/basketball/data)).
 
 
 ## source and license

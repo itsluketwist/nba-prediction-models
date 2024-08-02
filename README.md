@@ -1,9 +1,5 @@
 # **nba-prediction-models** 🏀
 
-
-![check code workflow](https://github.com/itsluketwist/python-template/actions/workflows/check.yaml/badge.svg)
-
-
 <div>
     <!-- badges from : https://shields.io/ -->
     <!-- logos available : https://simpleicons.org/ -->
@@ -23,18 +19,17 @@
 
 ## *about*
 
-This repository contains data and models to make predictions on upcoming NBA games, 
-by modelling the recent form of the teams playing as a sequential dataset of game statistics.
+This repository contains full historic NBA game data and PyTorch-based machine learning models to make predictions on upcoming NBA games, by modelling the recent form of the teams playing as a sequential dataset of game statistics.
 
 ## *structure*
 
-The projects core modules and interfaces are:
+The projects core modules and interfaces are as follows:
 
+- `train.ipynb` notebook: Code used to train the models. The notebook has full instructions, and can be used to perform your own training on the implmented model architectures.
+- `predict.ipynb` notebook: Interface to allow new result prediction from the pre-trained models. The notebook gives full instructions, and can be used to define your own dataset for a series of NBA game results, and then make a prediction on an upcoming game.
 - `data/*` module: This is where the sequential datasets for training and evaluation are constructed, from a publicly available database of NBA game statistics.
 - `src/*` module: This contains the main code for training and evaluating the models.
 - `output/*` module: Contains any output produced from training models.
-- `train.ipynb` notebook: Code used to train the final models.
-- `predict.ipynb` notebook: Interface to allow new result prediction.
 
 ## *installation*
 
