@@ -5,7 +5,7 @@ from pytorch_tcn import TCN as _TCN
 
 
 class TCN(nn.Module):
-    """Class for TCN model structured to predict the NBA data."""
+    """Class for TCN (temporal convolutional network) model to predict sequential NBA data."""
 
     def __init__(
         self,

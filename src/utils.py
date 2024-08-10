@@ -1,3 +1,4 @@
+import os
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List
@@ -78,3 +79,26 @@ class History:
         self.train_accuracy.append(float(train_accuracy))
         self.test_loss.append(float(test_loss))
         self.test_accuracy.append(float(test_accuracy))
+
+
+def check_dir(path: str, output: bool = True) -> str:
+    """
+    Utility to check the directory exists, and to create it if not.
+
+    Parameters
+    ----------
+    path: str
+    output: bool = True
+
+    Returns
+    -------
+    str
+        The given path, once it's sure to exist.
+    """
+    if output and not path.startswith("output/"):
+        path = "output/" + path.lstrip("/")
+
+    if not os.path.exists(path=path):
+        os.mkdir(path=path)
+
+    return path

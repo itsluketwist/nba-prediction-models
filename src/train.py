@@ -6,12 +6,14 @@ from torch import nn
 from torch.optim import Adam
 
 from src.loader import (
+    ALL_GAME_DATA,
     EVALUATION_DATA_FULL_22_23,
     EVALUATION_DATA_HALF_21_22,
     STREAK_DATA_EVALUATION_LONG,
     STREAK_DATA_EVALUATION_SHORT,
     STREAK_DATA_TRAINING_LONG,
     STREAK_DATA_TRAINING_SHORT,
+    TRAINING_DATA,
     get_eval_dataloader,
     get_train_dataloader,
 )
@@ -40,6 +42,8 @@ def run_train(
     output_path: str = "output",
     save_return: bool = False,
     weight_decay: float = 0.0,
+    use_all_data: bool = False,
+    data_as_sequence: bool = False,
 ):
     """
     Train the chosen model, given the hyperparameters.
@@ -64,6 +68,10 @@ def run_train(
         Whether or not to save the returned model and history data to file.
     weight_decay: float = 0.0
         The rate of decay for regularization.
+    use_all_data: bool = False
+        Whether to use all data when training, ir just the training data.
+    data_as_sequence: bool = True
+        Whether to use the dataset as a sequence of vectors, or single vector.
 
     Returns
     -------
@@ -75,6 +83,8 @@ def run_train(
         train_split=train_split,
         batch_size=batch_size,
         sequence_len=sequence_len,
+        parquet_file=ALL_GAME_DATA if use_all_data else TRAINING_DATA,
+        as_sequence=data_as_sequence,
     )
 
     loss_func = nn.BCELoss()  # init loss function
@@ -134,6 +144,8 @@ def run_train(
         model=model,
         loader=get_eval_dataloader(
             parquet_file=EVALUATION_DATA_HALF_21_22,
+            sequence_len=sequence_len,
+            as_sequence=data_as_sequence,
         ),
     )
     logger.info(f"Accuracy from season remainder: {hist.eval_accuracy_half:.4f}")
@@ -142,6 +154,8 @@ def run_train(
         model=model,
         loader=get_eval_dataloader(
             parquet_file=EVALUATION_DATA_FULL_22_23,
+            sequence_len=sequence_len,
+            as_sequence=data_as_sequence,
         ),
     )
     logger.info(f"Accuracy from next season: {hist.eval_accuracy_next:.4f}")
@@ -151,6 +165,8 @@ def run_train(
         model=model,
         loader=get_eval_dataloader(
             parquet_file=STREAK_DATA_TRAINING_SHORT,
+            sequence_len=sequence_len,
+            as_sequence=data_as_sequence,
         ),
         print_report=False,
     )
@@ -162,6 +178,8 @@ def run_train(
         model=model,
         loader=get_eval_dataloader(
             parquet_file=STREAK_DATA_TRAINING_LONG,
+            sequence_len=sequence_len,
+            as_sequence=data_as_sequence,
         ),
         print_report=False,
     )
@@ -173,6 +191,8 @@ def run_train(
         model=model,
         loader=get_eval_dataloader(
             parquet_file=STREAK_DATA_EVALUATION_SHORT,
+            sequence_len=sequence_len,
+            as_sequence=data_as_sequence,
         ),
         print_report=False,
     )
@@ -184,6 +204,8 @@ def run_train(
         model=model,
         loader=get_eval_dataloader(
             parquet_file=STREAK_DATA_EVALUATION_LONG,
+            sequence_len=sequence_len,
+            as_sequence=data_as_sequence,
         ),
         print_report=False,
     )

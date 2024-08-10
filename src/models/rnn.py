@@ -7,7 +7,7 @@ from src.utils import device
 
 
 class _BaseRNN(nn.Module, ABC):
-    """Base class for RNN models."""
+    """Base class for recurrent-cell models."""
 
     def __init__(self, hidden_size: int, input_size: int = 116, dropout: float = 0.0):
         super(_BaseRNN, self).__init__()
@@ -36,7 +36,7 @@ class _BaseRNN(nn.Module, ABC):
 
 
 class RNN(_BaseRNN):
-    """Vanilla RNN class."""
+    """Vanilla RNN (recurrent neural network) class to predict sequential NBA data."""
 
     def get_rnn_layer(self) -> nn.Module:
         return nn.RNN(
@@ -57,7 +57,7 @@ class RNN(_BaseRNN):
 
 
 class LSTM(_BaseRNN):
-    """LSTM class."""
+    """LSTM (long short-term memory) class to predict sequential NBA data."""
 
     def get_rnn_layer(self) -> nn.Module:
         return nn.LSTM(
@@ -79,7 +79,7 @@ class LSTM(_BaseRNN):
 
 
 class GRU(_BaseRNN):
-    """GRU class."""
+    """GRU (gated recurrent unit) class to predict sequential NBA data."""
 
     def get_rnn_layer(self) -> nn.Module:
         return nn.GRU(

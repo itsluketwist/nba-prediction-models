@@ -29,12 +29,15 @@ class GameSequenceDataset(Dataset):
         verbose: bool = False,
         sequence_len: int = 10,
         normalize: bool = False,
+        as_sequence: bool = True,
         **kwargs,
     ):
         self.data = pd.read_parquet(data_file)
         self.verbose = verbose
         self.sequence_len = sequence_len
         self.normalize = normalize
+        self.as_sequence = as_sequence
+        self.vector_len = 116
 
     def __len__(self):
         return len(self.data)
@@ -45,6 +48,9 @@ class GameSequenceDataset(Dataset):
 
         if self.normalize:
             sequence = normalize(sequence)
+
+        if not self.as_sequence:
+            sequence = sequence.reshape([self.sequence_len * self.vector_len])
 
         info = item["info"]
         result: str | int
@@ -65,6 +71,7 @@ def get_train_dataloader(
     parquet_file: str = TRAINING_DATA,
     dataset_class: Dataset = GameSequenceDataset,
     sequence_len: int = 10,
+    as_sequence: bool = True,
 ) -> tuple[DataLoader, DataLoader]:
     """
     Create dataloaders for training a model with NBA game data.
@@ -75,6 +82,8 @@ def get_train_dataloader(
     batch_size: int = 64
     parquet_file: str = TRAINING_DATA
     dataset_class: Dataset = GameSequenceDataset
+    sequence_len: int = 10
+    as_sequence: bool = True
 
     Returns
     -------
@@ -83,6 +92,7 @@ def get_train_dataloader(
     raw_data = dataset_class(
         data_file=parquet_file,
         sequence_len=sequence_len,
+        as_sequence=as_sequence,
     )
 
     num_train = int(len(raw_data) * train_split)
@@ -111,6 +121,7 @@ def get_eval_dataloader(
     parquet_file: str = EVALUATION_DATA,
     dataset_class: Dataset = GameSequenceDataset,
     sequence_len: int = 10,
+    as_sequence: bool = True,
 ) -> DataLoader:
     """
     Create a dataloader for evaluating a model with NBA game data.
@@ -119,6 +130,8 @@ def get_eval_dataloader(
     ----------
     parquet_file: str = EVALUATION_DATA
     dataset_class: Dataset = GameSequenceDataset
+    sequence_len: int = 10
+    as_sequence: bool = True
 
     Returns
     -------
@@ -127,6 +140,7 @@ def get_eval_dataloader(
     raw_data = dataset_class(
         data_file=parquet_file,
         sequence_len=sequence_len,
+        as_sequence=as_sequence,
     )
     return DataLoader(
         dataset=raw_data,
@@ -139,6 +153,7 @@ def get_sample_dataloader(
     parquet_file: str = FINAL_WEEK_DATA,
     dataset_class: Dataset = GameSequenceDataset,
     sequence_len: int = 10,
+    as_sequence: bool = True,
 ) -> DataLoader:
     """
     Create a dataloader for providing sample NBA game data.
@@ -148,6 +163,8 @@ def get_sample_dataloader(
     count: int = 10
     parquet_file: str = FINAL_WEEK_DATA
     dataset_class: Dataset = GameSequenceDataset
+    sequence_len: int = 10
+    as_sequence: bool = True
 
     Returns
     -------
@@ -157,6 +174,7 @@ def get_sample_dataloader(
         data_file=parquet_file,
         verbose=True,
         sequence_len=sequence_len,
+        as_sequence=as_sequence,
     )
     idxs = np.random.choice(range(0, len(raw_data)), size=(count,))
     _subset = Subset(raw_data, idxs)
