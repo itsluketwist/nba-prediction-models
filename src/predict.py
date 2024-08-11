@@ -2,9 +2,11 @@ import csv
 import logging
 
 import torch
+import torch.nn.functional as F
 from torch import Tensor
 from torch.nn import Module
 
+from src import models
 from src.utils import device
 
 
@@ -34,6 +36,9 @@ def make_prediction(
     model = model.to(device)
     data = data.to(device)
 
+    if isinstance(model, models.TE):
+        data = data.reshape([1, len(data[0]) * len(data[0][0])])
+
     # switch off autograd for
     with torch.no_grad():
         batch_pred = model(data)
@@ -51,6 +56,8 @@ def make_prediction(
 def load_record_from_csv(
     file_path: str,
     has_header_row: bool = True,
+    sequence_len: int = 8,
+    normalize: bool = True,
 ) -> Tensor:
     """
     Utility function to load game result data from a csv into a Tensor, ready for predictions.
@@ -61,6 +68,10 @@ def load_record_from_csv(
         Path to csv file to load.
     has_header_row: bool = True
         Whether the csv file has a header row.
+    sequence_len: int = 8
+        What sequence length to load and use.
+    normalize: bool = True
+        Whether to normalize the data after loading.
 
     Returns
     -------
@@ -77,4 +88,12 @@ def load_record_from_csv(
         for row in reader:
             data.append([float(x) for x in row])
 
-    return Tensor([data])
+            if len(data) == sequence_len:
+                break
+
+    _tensor = Tensor([data])
+
+    if normalize:
+        return F.normalize(_tensor)
+    else:
+        return _tensor

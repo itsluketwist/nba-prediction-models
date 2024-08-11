@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
+import torch.nn.functional as F
 from torch import Generator, Tensor
-from torch.nn.functional import normalize
 from torch.utils.data import DataLoader, Dataset, Subset, random_split
 
 
@@ -27,7 +27,7 @@ class GameSequenceDataset(Dataset):
         self,
         data_file: str,
         verbose: bool = False,
-        sequence_len: int = 10,
+        sequence_len: int = 8,
         normalize: bool = False,
         as_sequence: bool = True,
         **kwargs,
@@ -47,7 +47,7 @@ class GameSequenceDataset(Dataset):
         sequence = Tensor(item["data"])[-self.sequence_len :]
 
         if self.normalize:
-            sequence = normalize(sequence)
+            sequence = F.normalize(sequence)
 
         if not self.as_sequence:
             sequence = sequence.reshape([self.sequence_len * self.vector_len])
@@ -72,6 +72,7 @@ def get_train_dataloader(
     dataset_class: Dataset = GameSequenceDataset,
     sequence_len: int = 10,
     as_sequence: bool = True,
+    normalize: bool = True,
 ) -> tuple[DataLoader, DataLoader]:
     """
     Create dataloaders for training a model with NBA game data.
@@ -84,6 +85,7 @@ def get_train_dataloader(
     dataset_class: Dataset = GameSequenceDataset
     sequence_len: int = 10
     as_sequence: bool = True
+    normalize: bool = True
 
     Returns
     -------
@@ -93,6 +95,7 @@ def get_train_dataloader(
         data_file=parquet_file,
         sequence_len=sequence_len,
         as_sequence=as_sequence,
+        normalize=normalize,
     )
 
     num_train = int(len(raw_data) * train_split)
@@ -122,6 +125,7 @@ def get_eval_dataloader(
     dataset_class: Dataset = GameSequenceDataset,
     sequence_len: int = 10,
     as_sequence: bool = True,
+    normalize: bool = True,
 ) -> DataLoader:
     """
     Create a dataloader for evaluating a model with NBA game data.
@@ -132,6 +136,7 @@ def get_eval_dataloader(
     dataset_class: Dataset = GameSequenceDataset
     sequence_len: int = 10
     as_sequence: bool = True
+    normalize: bool = True
 
     Returns
     -------
@@ -141,6 +146,7 @@ def get_eval_dataloader(
         data_file=parquet_file,
         sequence_len=sequence_len,
         as_sequence=as_sequence,
+        normalize=normalize,
     )
     return DataLoader(
         dataset=raw_data,
@@ -154,6 +160,7 @@ def get_sample_dataloader(
     dataset_class: Dataset = GameSequenceDataset,
     sequence_len: int = 10,
     as_sequence: bool = True,
+    normalize: bool = True,
 ) -> DataLoader:
     """
     Create a dataloader for providing sample NBA game data.
@@ -165,6 +172,7 @@ def get_sample_dataloader(
     dataset_class: Dataset = GameSequenceDataset
     sequence_len: int = 10
     as_sequence: bool = True
+    normalize: bool = True
 
     Returns
     -------
@@ -175,6 +183,7 @@ def get_sample_dataloader(
         verbose=True,
         sequence_len=sequence_len,
         as_sequence=as_sequence,
+        normalize=normalize,
     )
     idxs = np.random.choice(range(0, len(raw_data)), size=(count,))
     _subset = Subset(raw_data, idxs)

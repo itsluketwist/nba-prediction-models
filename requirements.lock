@@ -366,6 +366,8 @@ torch==2.3.1
     #   -r requirements.txt
     #   pytorch-tcn
     #   torchvision
+torchinfo==1.8.0
+    # via -r requirements.txt
 torchvision==0.18.1
     # via -r requirements.txt
 tornado==6.4.1

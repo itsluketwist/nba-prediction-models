@@ -8,6 +8,7 @@ def plot_history(
     history: History,
     model_name: str,
     save_location: str = "output",
+    title: str | None = None,
 ):
     """
     Plot the training history curves.
@@ -20,6 +21,8 @@ def plot_history(
         Name of the model being plotted, used in plot title and saved filename.
     save_location: str = "output"
         Where to save the plot.
+    title: str | None = None
+        Whether to override the default title.
     """
     # configure matplotlib
     matplotlib.use("Agg")
@@ -28,7 +31,13 @@ def plot_history(
     x_ticks = [x + 1 for x in range(len(history.train_accuracy))]
 
     fig = plt.figure(figsize=(12, 6))
-    plt.suptitle(f"{model_name.capitalize()} Training ({filename_datetime()})", size=16)
+
+    if title is not None:
+        plt.suptitle(title)
+    else:
+        plt.suptitle(
+            f"{model_name.capitalize()} Training ({filename_datetime()})", size=16
+        )
 
     # plot loss on training and validation sets
     _ = fig.add_subplot(1, 2, 1)

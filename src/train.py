@@ -2,8 +2,7 @@ import logging
 
 import torch
 from jldc.core import save_jsonl
-from torch import nn
-from torch.optim import Adam
+from torch import nn, optim
 
 from src.loader import (
     ALL_GAME_DATA,
@@ -28,22 +27,23 @@ logger = logging.getLogger(__name__)
 # default training hyperparameters
 DEFAULT_INIT_LEARN_RATE = 1e-3
 DEFAULT_BATCH_SIZE = 64
-DEFAULT_EPOCHS = 10
+DEFAULT_EPOCHS = 30
 DEFAULT_TRAIN_SPLIT = 0.8
 
 
 def run_train(
     model: nn.Module,
-    sequence_len: int,
+    sequence_len: int = 8,
     init_learning_rate: float = DEFAULT_INIT_LEARN_RATE,
     batch_size: int = DEFAULT_BATCH_SIZE,
     epochs: int = DEFAULT_EPOCHS,
     train_split: float = DEFAULT_TRAIN_SPLIT,
     output_path: str = "output",
-    save_return: bool = False,
+    save_return: bool = True,
     weight_decay: float = 0.0,
-    use_all_data: bool = False,
-    data_as_sequence: bool = False,
+    data_use_all: bool = False,
+    data_as_sequence: bool = True,
+    data_normalized: bool = True,
 ):
     """
     Train the chosen model, given the hyperparameters.
@@ -52,7 +52,7 @@ def run_train(
     ----------
     model: nn.Module
         Model to use for predictions.
-    sequence_len: int
+    sequence_len: int = 8
         How many games to include in the sequence from the dataset.
     init_learning_rate: float = DEFAULT_INIT_LEARN_RATE
         Learning rate to use for training.
@@ -63,15 +63,18 @@ def run_train(
     train_split: float = DEFAULT_TRAIN_SPLIT
         What percentage of data to use for training vs. testing.
     output_path: str = "output"
-        Location to save the model (.pth file) and learning curves (.png file) after training.
+        Location to save the model (.pth file), learning curves (.png file),
+        and history (.json file) after training.
     save_return: bool = False
         Whether or not to save the returned model and history data to file.
     weight_decay: float = 0.0
         The rate of decay for regularization.
-    use_all_data: bool = False
+    data_use_all: bool = False
         Whether to use all data when training, ir just the training data.
     data_as_sequence: bool = True
         Whether to use the dataset as a sequence of vectors, or single vector.
+    data_normalized: bool = True
+        Whether to normalize the data before training.
 
     Returns
     -------
@@ -83,12 +86,13 @@ def run_train(
         train_split=train_split,
         batch_size=batch_size,
         sequence_len=sequence_len,
-        parquet_file=ALL_GAME_DATA if use_all_data else TRAINING_DATA,
+        parquet_file=ALL_GAME_DATA if data_use_all else TRAINING_DATA,
         as_sequence=data_as_sequence,
+        normalize=data_normalized,
     )
 
     loss_func = nn.BCELoss()  # init loss function
-    opt = Adam(
+    opt = optim.Adam(
         model.parameters(),
         lr=init_learning_rate,
         weight_decay=weight_decay,
@@ -146,6 +150,7 @@ def run_train(
             parquet_file=EVALUATION_DATA_HALF_21_22,
             sequence_len=sequence_len,
             as_sequence=data_as_sequence,
+            normalize=data_normalized,
         ),
     )
     logger.info(f"Accuracy from season remainder: {hist.eval_accuracy_half:.4f}")
@@ -156,6 +161,7 @@ def run_train(
             parquet_file=EVALUATION_DATA_FULL_22_23,
             sequence_len=sequence_len,
             as_sequence=data_as_sequence,
+            normalize=data_normalized,
         ),
     )
     logger.info(f"Accuracy from next season: {hist.eval_accuracy_next:.4f}")
@@ -167,6 +173,7 @@ def run_train(
             parquet_file=STREAK_DATA_TRAINING_SHORT,
             sequence_len=sequence_len,
             as_sequence=data_as_sequence,
+            normalize=data_normalized,
         ),
         print_report=False,
     )
@@ -180,6 +187,7 @@ def run_train(
             parquet_file=STREAK_DATA_TRAINING_LONG,
             sequence_len=sequence_len,
             as_sequence=data_as_sequence,
+            normalize=data_normalized,
         ),
         print_report=False,
     )
@@ -193,6 +201,7 @@ def run_train(
             parquet_file=STREAK_DATA_EVALUATION_SHORT,
             sequence_len=sequence_len,
             as_sequence=data_as_sequence,
+            normalize=data_normalized,
         ),
         print_report=False,
     )
@@ -206,6 +215,7 @@ def run_train(
             parquet_file=STREAK_DATA_EVALUATION_LONG,
             sequence_len=sequence_len,
             as_sequence=data_as_sequence,
+            normalize=data_normalized,
         ),
         print_report=False,
     )
