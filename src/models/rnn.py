@@ -12,6 +12,12 @@ class _BaseRNN(nn.Module, ABC):
     def __init__(self, hidden_size: int, input_size: int = 116, dropout: float = 0.0):
         super(_BaseRNN, self).__init__()
 
+        self.init_args = dict(
+            hidden_size=hidden_size,
+            input_size=input_size,
+            dropout=dropout,
+        )
+
         self._hidden_size = hidden_size
         self._input_size = input_size
         self._dropout = dropout

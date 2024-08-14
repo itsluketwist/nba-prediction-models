@@ -2,7 +2,7 @@ from typing import List
 
 import numpy as np
 import torch
-from sklearn.metrics import classification_report
+from sklearn.metrics import balanced_accuracy_score, classification_report
 from torch.nn import Module
 from torch.nn.modules.loss import _Loss
 from torch.optim import Optimizer
@@ -124,7 +124,7 @@ def evaluation_loop(
     Returns
     -------
     float
-        The prediction accuracy on the dataset.
+        The balanced accuracy of predictions on the dataset.
     """
     model.eval().to(device)  # model needs to be in evaluation mode
     y_pred, y_true = [], []
@@ -154,4 +154,7 @@ def evaluation_loop(
             )
         )
 
-    return sum(p == t for p, t in zip(y_pred_np, y_true_np)) / len(y_true_np)
+    return balanced_accuracy_score(
+        y_true=y_true,
+        y_pred=y_pred,
+    )

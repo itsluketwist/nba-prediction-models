@@ -1,6 +1,5 @@
 import logging
 
-import torch
 from jldc.core import save_jsonl
 from torch import nn, optim
 
@@ -17,6 +16,7 @@ from src.loader import (
     get_train_dataloader,
 )
 from src.loop import evaluation_loop, testing_loop, training_loop
+from src.persist import save_model
 from src.plot import plot_history
 from src.utils import History, device, filename_datetime
 
@@ -226,7 +226,7 @@ def run_train(
     # training complete, save results to disk
     if save_return:
         file_prefix = f"{output_path.rstrip('/')}/{model_name}_{filename_datetime()}"
-        torch.save(obj=model, f=f"{file_prefix}.pth")
         save_jsonl(file_path=f"{file_prefix}.json", data=hist)
+        save_model(file_path=f"{file_prefix}.pth", model=model)
 
     return model, hist

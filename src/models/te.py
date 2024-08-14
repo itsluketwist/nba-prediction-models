@@ -14,6 +14,13 @@ class TE(nn.Module):
     ):
         super(TE, self).__init__()
 
+        self.init_args = dict(
+            input_size=input_size,
+            sequence_len=sequence_len,
+            hidden_size=hidden_size,
+            **te_kwargs,
+        )
+
         self._input_size = input_size * sequence_len
         self._sequence_len = sequence_len
         self._output_size = 1

@@ -15,6 +15,12 @@ class TCN(nn.Module):
     ):
         super(TCN, self).__init__()
 
+        self.init_args = dict(
+            channels=channels,
+            input_size=input_size,
+            **tcn_kwargs,
+        )
+
         self._channels = channels
         self._input_size = input_size
         self._output_size = 1
@@ -28,14 +34,10 @@ class TCN(nn.Module):
             input_shape="NLC",
             **tcn_kwargs,
         )
-        # self.linear = nn.Linear(self._hidden_size, self._output_size)
-        # self.sigmoid = nn.Sigmoid()
 
     def forward(self, input: torch.Tensor) -> torch.Tensor:
         output = self.tcn(input)
         output = output[:, -1, :]
-        # output = self.linear(output)
-        # output = self.sigmoid(output)
         return output
 
     def __repr__(self) -> str:
