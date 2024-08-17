@@ -1,4 +1,5 @@
 files: '.*'
+
 repos:
 # pre-commit
 -   repo: https://github.com/pre-commit/pre-commit-hooks
@@ -6,8 +7,8 @@ repos:
     hooks:
       - id: check-case-conflict
       - id: end-of-file-fixer
+      - id: trailing-whitespace
       - id: requirements-txt-fixer
-      - id: check-case-conflict
       - id: check-yaml
       - id: check-toml
       - id: check-json

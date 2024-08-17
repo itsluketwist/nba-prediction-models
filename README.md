@@ -19,7 +19,7 @@
 
 ## *about*
 
-This repository contains full historic NBA game data and PyTorch-based machine learning models to make predictions on upcoming NBA games, by modelling the recent form of the teams playing as a sequential dataset of game statistics.
+This repository contains historic NBA game data and PyTorch-based machine learning models to make predictions on upcoming NBA games, using the novel approach of modelling the recent form of the teams playing as a sequential dataset of game statistics.
 
 ## *structure*
 
@@ -27,9 +27,9 @@ The projects core modules and interfaces are as follows:
 
 - `train.ipynb` notebook: Code used to train the models. The notebook has full instructions, and can be used to perform your own training on the implmented model architectures.
 - `predict.ipynb` notebook: Interface to allow new result prediction from the pre-trained models. The notebook gives full instructions, and can be used to define your own dataset for a series of NBA game results, and then make a prediction on an upcoming game.
-- `data/*` module: This is where the sequential datasets for training and evaluation are constructed, from a publicly available database of NBA game statistics.
-- `src/*` module: This contains the main code for training and evaluating the models.
-- `output/*` module: Contains any output produced from training models.
+- `data/*` module: This is where the sequential datasets for training and evaluation are constructed, from a publicly available database of NBA game statistics. Checkout it's [readme](/data/README.md) for more information.
+- `src/*` module: This contains the underlying code for training and evaluating the models.
+- `output/*` module: Contains any output produced from training, including various pretrained models.
 
 ## *installation*
 
@@ -42,13 +42,11 @@ git clone https://github.com/itsluketwist/nba-prediction-models.git
 Once cloned, install the requirements locally in a virtual environment:
 
 ```shell
-pip install uv
-
-uv venv
+python -m venv .venv
 
 . venv/bin/activate
 
-uv pip install -r requirements.lock
+pip install -r requirements.lock
 ```
 
 ## *development*
@@ -61,4 +59,10 @@ pre-commit install
 pre-commit autoupdate
 
 pre-commit run --all-files
+```
+
+Add dependencies first to the `requirements.txt`, and version lock with:
+
+```shell
+pip compile requirements.txt -o requirements.lock
 ```
