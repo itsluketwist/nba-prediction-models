@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 
 from src import models
+from src.utils import device
 
 
 def save_model(file_path: str, model: nn.Module) -> None:
@@ -36,7 +37,7 @@ def load_model(file_path: str) -> nn.Module | None:
     nn.Module | None
         The loaded model, or None invalid.
     """
-    model_data = torch.load(file_path)
+    model_data = torch.load(file_path, map_location=device)
 
     model_class: nn.Module
     match model_data["class"]:

@@ -44,7 +44,7 @@ Once cloned, install the requirements locally in a virtual environment:
 ```shell
 python -m venv .venv
 
-. venv/bin/activate
+. .venv/bin/activate
 
 pip install -r requirements.lock
 ```
@@ -61,8 +61,10 @@ pre-commit autoupdate
 pre-commit run --all-files
 ```
 
-Add dependencies first to the `requirements.txt`, and version lock with:
+Use `uv` for dependency management, first add to `requirements.txt`. Then install `uv` and version lock with:
 
 ```shell
-pip compile requirements.txt -o requirements.lock
+pip install uv
+
+uv pip compile requirements.txt -o requirements.lock
 ```

@@ -1,9 +1,9 @@
 # data
 
-This module contains NBA game result sequential datasets, created from a database of NBA game 
+This module contains NBA game result sequential datasets, created from a database of NBA game
 results and statistics. All data creation and manipulation code is included.
 
-A description of the data format, along with choices made regarding the selection of which data 
+A description of the data format, along with choices made regarding the selection of which data
 to use are included below.
 
 ## contents
@@ -26,18 +26,18 @@ to use are included below.
 
 ## source and license
 
-The raw data used is from the comprehensive 
+The raw data used is from the comprehensive
 [NBA Database](https://www.kaggle.com/datasets/wyattowalsh/basketball/data) dataset found on Kaggle.
 
-Some additional metrics are calculated to supplement the data, and it was molded into sequential 
+Some additional metrics are calculated to supplement the data, and it was molded into sequential
 datasets for model training purposes. None of the data itself has been changed.
 
-The new datasets are available to use under the 
+The new datasets are available to use under the
 [Creative Commons BY SA 4.0 License](https://creativecommons.org/licenses/by-sa/4.0/).
 
 ## dataset format
 
-The datasets have records that correspond to a specific NBA game, contianing the result and 
+The datasets have records that correspond to a specific NBA game, contianing the result and
 statistics from the 10 previous games for both teams.
 
 Each dataset is stored as a pandas dataframe in a parquet file, and can be loaded with:
